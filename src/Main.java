@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.ArrayList;
+import java.io.DataInputStream;
 
 public class Main {
     static Scanner scn = new Scanner(System.in);
@@ -17,7 +17,6 @@ public class Main {
 
         ArrayList<String> lista = new ArrayList<String>();
 
-
         while (opcao) {
             System.out.println("Escolha uma opção do menu:");
             System.out.println("1 - Adicionar item a lista");
@@ -25,9 +24,14 @@ public class Main {
             System.out.println("3 - Imprimir a lista");
             System.out.println("4 - Exportar lista");
             System.out.println("5 - Importar lista");
+            System.out.println("0 - Sair");
 
             int menu = scn.nextInt();
             switch (menu) {
+                case 0:
+                    opcao = false;
+                    break;
+
                 case 1:
                     AddList(lista);
                     break;
@@ -53,8 +57,9 @@ public class Main {
 
 
             }
+            scn = new Scanner(System.in);
             System.out.println("Voltar ao menu? y/n");
-            if (scn.hasNextLine()){
+            if (scn.hasNextLine()) {
                 if (Objects.equals(scn.nextLine(), "n")) {
                     opcao = false;
                 }
@@ -65,17 +70,9 @@ public class Main {
     }
 
     public static void AddList(ArrayList<String> lista) {
-        boolean opcao = true;
-        while (opcao) {
-            System.out.println("Digite a tarefa que você gostaria de adicionar a lista");
-            if (scn.nextLine() != null) {
-                lista.add(scn.nextLine());
-                break;
-            }
-            System.out.println("De novo? y/n");
-            if (Objects.equals(scn.nextLine(), "n")) {
-                opcao = false;
-            }
+        System.out.println("Digite a tarefa que você gostaria de adicionar a lista");
+        if (scn.nextLine() != null) {
+            lista.add(scn.nextLine());
         }
     }
 
@@ -103,7 +100,7 @@ public class Main {
         try {
             FileWriter arquivo = new FileWriter("List.txt");
             for (int i = 0; i < lista.size(); i++) {
-                arquivo.write(lista.get(i) + "( )" + "\n");
+                arquivo.write("( )" + lista.get(i) + ";\n");
             }
             arquivo.close();
         } catch (IOException e) {
@@ -114,14 +111,15 @@ public class Main {
 
     public static void Import(ArrayList<String> lista)
             throws FileNotFoundException {
+        lista.clear();
         try {
             File arquivo = new File("/home/cathy/codes/ToDoList/List.txt");
-            StringBuffer sb = new StringBuffer();
             scn = new Scanner(arquivo);
             while (scn.hasNextLine()) {
-                sb.append(scn.nextLine()).append("\n");
+                lista.add(scn.nextLine());
             }
-            System.out.println(sb);
+
+            System.out.println("O arquivo foi importado com sucesso");
 
         } catch (FileNotFoundException e) {
             System.out.println("Ocorreu um erro");
