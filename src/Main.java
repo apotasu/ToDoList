@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
-import java.io.DataInputStream;
 
 public class Main {
     static Scanner scn = new Scanner(System.in);
